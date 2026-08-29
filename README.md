@@ -1,5 +1,8 @@
 # Vajra Sentinel
 
+[![defensive-ci](https://github.com/darshnoor30/Vajra-Sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/darshnoor30/Vajra-Sentinel/actions/workflows/ci.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/darshnoor30/Vajra-Sentinel/badge)](https://scorecard.dev/viewer/?uri=github.com/darshnoor30/Vajra-Sentinel)
+
 **Evidence-first hybrid network IDS/IPS for analyst-ready detection, investigation, and safe response.**
 
 Vajra Sentinel turns Suricata EVE telemetry into explainable detections, correlated incidents, and reversible containment actions. It combines signature evidence, stateful behavior analytics, and an optional supervised flow model without allowing an opaque ML score to block traffic on its own.
