@@ -1,0 +1,30 @@
+services:
+  vajra-sentinel:
+    build: .
+    image: vajra-sentinel:1.0.1
+    ports:
+      - "127.0.0.1:8765:8765"
+    environment:
+      VAJRA_ENV: development
+      VAJRA_HOST: 0.0.0.0
+      VAJRA_PORT: 8765
+      VAJRA_API_KEY: ${VAJRA_API_KEY:-local-demo-key-change-me}
+      VAJRA_DATABASE_PATH: /app/runtime/vajra.db
+      VAJRA_EVE_PATH: /app/runtime/eve.json
+      VAJRA_MODEL_PATH: /app/artifacts/model.joblib
+      VAJRA_MODEL_METADATA_PATH: /app/artifacts/model_metadata.json
+      VAJRA_DEMO_MODE: "true"
+      VAJRA_IPS_MODE: dry-run
+    volumes:
+      - vajra-runtime:/app/runtime
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,noexec,nosuid,nodev
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+volumes:
+  vajra-runtime:

@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+.env
+data/*.csv
+!data/README.md
+runtime/
+artifacts/*.joblib
+!artifacts/model.joblib
+*.log
+.DS_Store

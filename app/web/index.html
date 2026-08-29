@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vajra Sentinel evidence-first hybrid IDS/IPS dashboard">
+  <title>Vajra Sentinel · Detection & Response</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="Vajra Sentinel home">
+      <span class="brand-mark" aria-hidden="true">V</span>
+      <span><strong>VAJRA</strong><small>SENTINEL</small></span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a class="active" href="#overview">Overview</a>
+      <a href="#detections">Detections</a>
+      <a href="#incidents">Incidents</a>
+      <a href="#response">Response</a>
+      <a href="#model">Model</a>
+    </nav>
+    <div class="system-state">
+      <span class="pulse" aria-hidden="true"></span>
+      <span id="system-status">Connecting</span>
+      <span class="divider"></span>
+      <span id="clock">--:--:-- UTC</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="overview">
+      <div>
+        <div class="eyebrow"><span>DEFENSIVE SECURITY LAB</span><span id="mode-badge">DRY-RUN IPS</span></div>
+        <h1>Evidence before <em>action.</em></h1>
+        <p>Real Suricata telemetry, explainable analytics, incident correlation, and reversible containment—without pretending every anomaly is an attack.</p>
+      </div>
+      <div class="hero-actions">
+        <button class="button primary" id="run-demo" type="button">
+          <span aria-hidden="true">↻</span> Replay clean simulation
+        </button>
+        <button class="button ghost" id="refresh" type="button">Refresh evidence</button>
+        <span class="demo-label" id="data-label">VERIFIED LAB DATA</span>
+      </div>
+    </section>
+
+    <section class="metrics-grid" aria-label="Security metrics">
+      <article class="metric focal">
+        <div class="metric-head"><span>Security posture</span><span class="metric-icon">◎</span></div>
+        <div class="metric-value"><strong id="health-score">--</strong><small>/100</small></div>
+        <div class="score-track"><span id="score-bar"></span></div>
+        <p id="posture-copy">Calculating transparent risk score…</p>
+      </article>
+      <article class="metric">
+        <div class="metric-head"><span>Events normalized</span><span class="metric-icon blue">⌁</span></div>
+        <div class="metric-value"><strong id="event-count">--</strong></div>
+        <p>Sensor records in the evidence store</p>
+      </article>
+      <article class="metric">
+        <div class="metric-head"><span>Critical + high</span><span class="metric-icon danger">!</span></div>
+        <div class="metric-value"><strong id="priority-count">--</strong></div>
+        <p>Priority detections requiring analyst review</p>
+      </article>
+      <article class="metric">
+        <div class="metric-head"><span>Open incidents</span><span class="metric-icon amber">◇</span></div>
+        <div class="metric-value"><strong id="incident-count">--</strong></div>
+        <p>Correlated cases, not duplicate alerts</p>
+      </article>
+      <article class="metric">
+        <div class="metric-head"><span>Containments</span><span class="metric-icon green">▣</span></div>
+        <div class="metric-value"><strong id="block-count">--</strong></div>
+        <p id="containment-copy">Reversible actions in dry-run mode</p>
+      </article>
+    </section>
+
+    <section class="analysis-grid">
+      <article class="panel trend-panel">
+        <div class="panel-head">
+          <div><span class="kicker">DETECTION VELOCITY</span><h2>Signal timeline</h2></div>
+          <span class="panel-note">LAST 12 HOURLY BUCKETS</span>
+        </div>
+        <div class="chart-wrap">
+          <svg id="trend-chart" role="img" aria-label="Detection trend chart" viewBox="0 0 760 220"></svg>
+        </div>
+      </article>
+
+      <article class="panel severity-panel">
+        <div class="panel-head">
+          <div><span class="kicker">TRIAGE QUEUE</span><h2>Severity distribution</h2></div>
+        </div>
+        <div id="severity-bars" class="severity-bars" aria-live="polite"></div>
+        <div class="source-row"><span>Evidence sources</span><strong id="source-summary">—</strong></div>
+      </article>
+    </section>
+
+    <section class="panel table-panel" id="detections">
+      <div class="panel-head">
+        <div><span class="kicker">EXPLAINABLE FINDINGS</span><h2>Detection workbench</h2></div>
+        <div class="filters" role="group" aria-label="Detection filters">
+          <button class="filter active" data-severity="" type="button">All</button>
+          <button class="filter" data-severity="critical" type="button">Critical</button>
+          <button class="filter" data-severity="high" type="button">High</button>
+          <button class="filter" data-severity="medium" type="button">Medium</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Detection</th><th>Evidence source</th><th>Source → destination</th><th>Confidence</th><th>Status</th><th></th></tr></thead>
+          <tbody id="detections-body"><tr><td colspan="6" class="loading">Loading detections…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="two-column">
+      <article class="panel" id="incidents">
+        <div class="panel-head">
+          <div><span class="kicker">CORRELATED CASES</span><h2>Incident queue</h2></div>
+          <span class="panel-note">15-MINUTE SOURCE WINDOW</span>
+        </div>
+        <div id="incident-list" class="stack-list"></div>
+      </article>
+
+      <article class="panel" id="response">
+        <div class="panel-head">
+          <div><span class="kicker">SAFE CONTAINMENT</span><h2>Response ledger</h2></div>
+          <span class="mode-pill" id="response-mode">DRY-RUN</span>
+        </div>
+        <div class="guardrail">
+          <span aria-hidden="true">⛨</span>
+          <p><strong>Human-in-the-loop by design.</strong> ML-only findings and protected networks cannot trigger a block.</p>
+        </div>
+        <div id="block-list" class="stack-list compact"></div>
+      </article>
+    </section>
+
+    <section class="panel model-panel" id="model">
+      <div class="model-intro">
+        <span class="kicker">MODEL GOVERNANCE</span>
+        <h2>ML is supporting evidence—not an oracle.</h2>
+        <p>The classifier consumes only features the live sensor can reproduce. Its artifact hash, dataset origin, threshold, and evaluation metrics are visible so reviewers can challenge every claim.</p>
+      </div>
+      <div class="model-card">
+        <div class="model-status"><span class="status-dot" id="model-dot"></span><strong id="model-status">Checking model</strong></div>
+        <dl>
+          <div><dt>Data origin</dt><dd id="model-origin">—</dd></div>
+          <div><dt>Threshold</dt><dd id="model-threshold">—</dd></div>
+          <div><dt>PR-AUC</dt><dd id="model-prauc">—</dd></div>
+          <div><dt>False-positive rate</dt><dd id="model-fpr">—</dd></div>
+        </dl>
+        <p class="model-warning" id="model-warning">Loading governance metadata…</p>
+      </div>
+    </section>
+
+    <section class="proof-grid">
+      <article><span>01</span><h3>Collect</h3><p>Suricata EVE JSON with flow and packet references.</p></article>
+      <article><span>02</span><h3>Explain</h3><p>Rule thresholds, confidence, limitations, and MITRE mapping.</p></article>
+      <article><span>03</span><h3>Correlate</h3><p>Related detections become one analyst-ready incident.</p></article>
+      <article><span>04</span><h3>Contain</h3><p>TTL-based nftables actions with allowlists and rollback.</p></article>
+      <article><span>05</span><h3>Audit</h3><p>Every state change and response is attributable.</p></article>
+    </section>
+  </main>
+
+  <footer>
+    <span>VAJRA SENTINEL v1.0.1 · BUILT BY DARSHNOOR KAUR</span>
+    <span>DEFENSIVE USE ONLY · AUTHORIZED NETWORKS</span>
+  </footer>
+
+  <dialog id="evidence-dialog">
+    <div class="dialog-head">
+      <div><span class="kicker">DETECTION EVIDENCE</span><h2 id="dialog-title">Finding</h2></div>
+      <button id="close-dialog" class="icon-button" aria-label="Close" type="button">×</button>
+    </div>
+    <div id="dialog-content"></div>
+    <div class="dialog-actions">
+      <button id="contain-button" class="button danger-button" type="button">Simulate containment</button>
+      <button id="dismiss-dialog" class="button ghost" type="button">Close</button>
+    </div>
+  </dialog>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "model_name": "Vajra Flow Classifier",
+  "model_type": "HistGradientBoostingClassifier",
+  "status": "ready",
+  "trained_at": "2026-08-28T18:50:56.358787+00:00",
+  "data_origin": "synthetic-smoke-test",
+  "dataset_hashes": {
+    "train_sha256": "5b723147a900567bb6800a6e53deccd8b01495d333266872d84a775efa57e912",
+    "test_sha256": "d00f40cc88b0a1a4a07fcf6bb39228da280b5a623670a7c2b94c3c2763413fd6"
+  },
+  "rows": {
+    "fit": 9600,
+    "validation": 2400,
+    "independent_test": 4000
+  },
+  "feature_contract": [
+    "duration",
+    "protocol",
+    "app_proto",
+    "bytes_to_server",
+    "bytes_to_client",
+    "packets_to_server",
+    "packets_to_client",
+    "bytes_per_packet",
+    "packets_per_second",
+    "byte_ratio"
+  ],
+  "threshold": 0.960216,
+  "target_validation_fpr": 0.03,
+  "metrics": {
+    "roc_auc": 0.999977,
+    "pr_auc": 0.999966,
+    "precision": 0.998708,
+    "recall": 0.998063,
+    "f1": 0.998386,
+    "false_positive_rate": 0.000816,
+    "specificity": 0.999184,
+    "brier_score": 0.001159,
+    "confusion_matrix": {
+      "tn": 2449,
+      "fp": 2,
+      "fn": 3,
+      "tp": 1546
+    }
+  },
+  "artifact_sha256": "36c2fa0211f73b81d86b39fb68dedf592ab8b909e545950a3627216b339176b0",
+  "runtime": {
+    "python": "3.12.13",
+    "scikit_learn": "1.8.0",
+    "pandas": "2.2.3",
+    "numpy": "2.3.5"
+  },
+  "safety": {
+    "ml_only_auto_block": false,
+    "claim": "Pipeline validation only; not a real-world performance claim."
+  }
+}

@@ -1,0 +1,23 @@
+# Merge this outputs block into the host Suricata configuration.
+# It enables correlation fields without packet payload retention.
+outputs:
+  - eve-log:
+      enabled: true
+      filetype: regular
+      filename: eve.json
+      community-id: true
+      community-id-seed: 0
+      filemode: 600
+      types:
+        - alert:
+            tagged-packets: false
+        - anomaly
+        - flow
+        - dns:
+            version: 3
+        - http:
+            extended: true
+        - tls:
+            extended: true
+        - drop
+
