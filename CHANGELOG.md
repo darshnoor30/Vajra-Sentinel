@@ -16,6 +16,11 @@
 - Ruff formatting and lint checks pass.
 - Model artifact hash, feature contract, OpenAPI version, and package structure pass validation.
 
+### Security automation
+
+- Add an official OpenSSF Scorecard workflow with authenticated result publication and SARIF upload to GitHub code scanning.
+- Pin every GitHub Actions dependency to an immutable commit SHA and disable persisted checkout credentials.
+
 ## 1.0.0 — 2026-08-28
 
 - Initial evidence-first hybrid IDS/IPS portfolio release.
