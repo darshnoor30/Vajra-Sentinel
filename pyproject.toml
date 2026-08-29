@@ -22,7 +22,7 @@ dependencies = [
 ml = [
   "joblib>=1.4,<2.0",
   "numpy>=2.0,<3.0",
-  "pandas>=2.2,<3.0",
+  "pandas>=2.2,<4.0",
   # joblib model artifacts are only supported with their training version.
   "scikit-learn==1.8.0",
 ]
